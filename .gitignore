@@ -7,3 +7,8 @@ node_modules
 !.env.example
 .DS_Store
 vite.config.js.timestamp-*
+
+# fleet a11y audit + playwright artifacts
+/.reddoor-a11y
+/test-results
+/playwright-report
