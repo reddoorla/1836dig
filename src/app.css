@@ -1,0 +1,27 @@
+/* Tailwind CSS v4 configuration */
+@import "tailwindcss";
+
+/* Proxima Nova Light — the site's own webfont, self-hosted (migrated off the
+   Webflow CDN so nothing breaks when the Webflow plan is cancelled). */
+@font-face {
+  font-family: "Proxima Nova";
+  src: url("/fonts/ProximaNova-Light.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  /* The site's single brand color (Webflow #faf7cd). */
+  --color-cream: #faf7cd;
+
+  --font-heading: "Baskervville", Georgia, serif;
+  --font-body: "Proxima Nova", "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Full-viewport hero background (the only imagery on the site). The original
+   pans the same photo differently per breakpoint; cover keeps it faithful
+   without the triple-layered Webflow background hack. */
+.bg-hero {
+  background: url("/images/background.jpg") center / cover no-repeat #101010;
+}
