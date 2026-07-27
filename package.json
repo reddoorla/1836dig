@@ -5,10 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev --host",
+    "vite:dev": "vite dev",
     "build": "vite build",
     "preview": "vite preview",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-    "lint": "prettier --check .",
+    "lint": "prettier --check . && eslint .",
     "format": "prettier --write ."
   },
   "dependencies": {
@@ -17,15 +18,23 @@
     "@tailwindcss/vite": "^4.3.0"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.11.3",
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.60.0",
     "@sveltejs/adapter-netlify": "^6.0.4",
     "@sveltejs/kit": "^2.61.1",
     "@sveltejs/vite-plugin-svelte": "^7.1.2",
+    "eslint": "^10.4.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-svelte": "^3.18.0",
+    "globals": "^17.6.0",
     "prettier": "^3.8.3",
     "prettier-plugin-svelte": "^4.0.1",
     "svelte": "^5.55.10",
     "svelte-check": "^4.4.8",
     "tailwindcss": "^4.3.0",
     "typescript": "^6.0.3",
+    "typescript-eslint": "^8.60.0",
     "vite": "^8.0.14"
   },
   "packageManager": "pnpm@11.8.0",
