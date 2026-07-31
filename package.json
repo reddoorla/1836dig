@@ -6,11 +6,13 @@
   "scripts": {
     "dev": "vite dev --host",
     "vite:dev": "vite dev",
+    "prepare": "svelte-kit sync",
     "build": "vite build",
     "preview": "vite preview",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "lint": "prettier --check . && eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test:smoke": "playwright install chromium && playwright test"
   },
   "dependencies": {
     "@fontsource/baskervville": "^5.2.5",
