@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@fontsource/baskervville": "^5.2.5",
-    "@reddoorla/maintenance": "^0.75.0",
+    "@reddoorla/maintenance": "^0.76.0",
     "@tailwindcss/vite": "^4.3.0"
   },
   "devDependencies": {
