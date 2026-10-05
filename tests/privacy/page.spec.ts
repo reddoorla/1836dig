@@ -19,7 +19,7 @@ test.describe("/privacy", () => {
     await expect(
       page.getByRole("heading", { level: 1, name: "Privacy Policy" }),
     ).toBeVisible();
-    for (const id of ["forms", "netlify"]) {
+    for (const id of ["forms", "ga4", "netlify"]) {
       await expect(page.getByTestId(`service-${id}`)).toBeVisible();
     }
     for (const id of [

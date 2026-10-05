@@ -93,12 +93,12 @@ export default { kit: { csp: { directives: { ...base } } } };`,
 });
 
 test.describe("this site", () => {
-  test("lists the contact form and Netlify, and no font, video or analytics host until code starts one", async () => {
+  test("lists the contact form, Netlify and the GA4 its client hook starts, and no font or video host", async () => {
     const site = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
     expect(await collectBuildServices(site)).toEqual({
       forms: true,
       newsletter: false,
-      ga4: false,
+      ga4: true,
       netlify: true,
       vimeo: false,
       youtube: false,

@@ -23,19 +23,35 @@ const config = {
       ...(process.env.URL ? { origin: process.env.URL } : {}),
     },
     // Tight baseline CSP — no CMS, no third-party media. Cloudflare Turnstile
-    // is the only external surface (contact-form anti-bot, gated behind
-    // PUBLIC_TURNSTILE_SITE_KEY). SvelteKit adds nonces/hashes for its own
-    // inline scripts automatically.
+    // (contact-form anti-bot, gated behind PUBLIC_TURNSTILE_SITE_KEY) and GA4
+    // (reddoor-maintenance's ANALYTICS_CSP hosts) are the only external
+    // surfaces. SvelteKit adds nonces/hashes for its own inline scripts
+    // automatically.
     csp: {
       mode: "auto",
       directives: {
         "default-src": ["self"],
-        "script-src": ["self", "https://challenges.cloudflare.com"],
+        "script-src": [
+          "self",
+          "https://challenges.cloudflare.com",
+          // GA4, loaded by initAnalytics (src/hooks.client.ts) on 1836dig.com only.
+          "https://www.googletagmanager.com",
+        ],
         "style-src": ["self", "unsafe-inline"],
-        "img-src": ["self", "data:"],
+        "img-src": [
+          "self",
+          "data:",
+          "https://www.googletagmanager.com",
+          "https://*.google-analytics.com",
+        ],
         "font-src": ["self", "data:"],
         "frame-src": ["self", "https://challenges.cloudflare.com"],
-        "connect-src": ["self"],
+        "connect-src": [
+          "self",
+          "https://www.googletagmanager.com",
+          "https://*.google-analytics.com",
+          "https://*.google.com",
+        ],
         "base-uri": ["self"],
         "form-action": ["self"],
         "frame-ancestors": ["self"],
