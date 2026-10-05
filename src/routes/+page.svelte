@@ -1,6 +1,8 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
   import TurnstileWidget from "$lib/components/TurnstileWidget.svelte";
+  import PrivacyNotice from "$lib/components/PrivacyNotice.svelte";
+  import { PRIVACY_PATH } from "$lib/privacy/policy";
   import type { ActionData, PageData } from "./$types";
 
   let { data, form }: { data: PageData; form: ActionData } = $props();
@@ -100,12 +102,15 @@
           >
             {submitting ? "PLEASE WAIT..." : "CONTACT US"}
           </button>
+
+          <PrivacyNotice />
         </form>
       {/if}
     </div>
   </main>
 
   <footer class="font-body text-cream/70 pb-4 text-center text-sm font-light">
-    © {new Date().getFullYear()} 1836 Digital Investment Group
+    © {new Date().getFullYear()} 1836 Digital Investment Group ·
+    <a href={PRIVACY_PATH} class="hover:text-cream underline">Privacy Policy</a>
   </footer>
 </div>

@@ -26,6 +26,7 @@
     "@sveltejs/adapter-netlify": "^6.0.4",
     "@sveltejs/kit": "^2.61.1",
     "@sveltejs/vite-plugin-svelte": "^7.1.2",
+    "@types/node": "^24.19.1",
     "eslint": "^10.4.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-svelte": "^3.18.0",
@@ -42,5 +43,10 @@
   "packageManager": "pnpm@12.5.1",
   "engines": {
     "node": ">=20"
+  },
+  "reddoor": {
+    "a11yRoutes": [
+      "/privacy"
+    ]
   }
 }
