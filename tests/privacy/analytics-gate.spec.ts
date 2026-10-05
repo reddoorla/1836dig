@@ -42,6 +42,12 @@ async function tagState(page: Page) {
 }
 
 test.describe("the GA4 tag's production-host gate", () => {
+  // A proxied request still in flight at teardown throws "Fetch response has
+  // been disposed" out of route.fulfill (seen on 29-navy#73).
+  test.afterEach(async ({ page }) => {
+    await page.unrouteAll({ behavior: "ignoreErrors" });
+  });
+
   test("loads gtag for this property on 1836dig.com", async ({
     page,
     baseURL,
