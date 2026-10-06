@@ -49,3 +49,15 @@ cancelled cannot be answered from inside this repo.
 
 **What changed today.** `CLAUDE.md` now exists and carries "The work journal";
 this file is the other half.
+
+## 2026-10-05 — A DRAFT /privacy page and GA4 (G-1ZYB95TKC1) on 1836dig.com
+
+The property (556936272) and its stream (`G-1ZYB95TKC1`, `https://1836dig.com/`) existed since 10-01, but the site carried no tag. The central `analytics-tag` recipe refuses a site with no `/privacy`, so the fleet page from reddoor-starter#165 came first, ported the way data-dynamiq#59 ported it the same day. The operator answered reddoor-maintenance's Operator decisions 73 "yes, before the legal review" for Data Dynamiq, and then extended that to this site and 29 Navy.
+
+**This site's CSP is the difference from Data Dynamiq.** `kit.csp` here is SvelteKit's own option, and the recipe only knows how to extend the `createSvelteConfig` factory's `csp`, so it wrote the hook and printed the hosts to add by hand. The gate spec came first and was red: served as `1836dig.com` and as `www.1836dig.com`, the build requested no gtag at all. The tag ran and the browser refused the loader, which on a live site is a property that silently records nothing. After `script-src`, `img-src` and `connect-src` took reddoor-maintenance's `ANALYTICS_CSP` hosts, it went green. Removing the `script-src` host again turns both production-host tests red.
+
+**The policy's service list comes from the CSP and the code together.** With a CSP present, a video host must be admitted and a font host must also be named in code. That gives: the contact form (the ingest action), Netlify, and GA4 once the hook exists. Fonts are self-hosted (`@fontsource` Baskervville and a local Proxima Nova), so no font line appears. Turnstile is decided at request time from `PUBLIC_TURNSTILE_SITE_KEY`.
+
+**Two test lessons carried over.** "The notice is in view without scrolling" was the right test for Data Dynamiq's scrolling dialog, but here it was false and the page was fine: at 1280×800 the submit button itself sits below the fold, and the page scrolls by design. The test now asserts what matters here instead: once scrolled to, the notice is fully visible and starts less than 40px under the button. The site had no `@types/node`, which the ported specs and the build plugin need, and a JS `vite.config` cannot import a `.ts` plugin under `checkJs`, so it became `vite.config.ts`.
+
+**Not done.** The legal name, privacy email and effective date render as placeholders, because none is in this repo or on the fleet row. The copyright line's "1836 Digital Investment Group" may be the legal name, but nobody has said so. No live GA hit can exist until the PR merges and deploys.
