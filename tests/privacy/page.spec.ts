@@ -34,7 +34,7 @@ test.describe("/privacy", () => {
     await expect(page.getByTestId("privacy-dnt")).toBeVisible();
   });
 
-  test("names the business and the effective date, and shows a placeholder for the contact email", async ({
+  test("names the business, the effective date and the contact email", async ({
     page,
   }) => {
     await page.goto("/privacy", { waitUntil: "domcontentloaded" });
@@ -44,7 +44,10 @@ test.describe("/privacy", () => {
     );
     expect(text).toContain("Effective October 6, 2026");
     expect(text).not.toContain("[client legal name]");
-    expect(text).toContain("[privacy contact email]");
+    expect(text).not.toContain("[privacy contact email]");
+    await expect(
+      page.locator('article a[href="mailto:benhalbach@gmail.com"]').first(),
+    ).toBeVisible();
   });
 
   test("is the only page that asks not to be indexed", async ({ page }) => {
