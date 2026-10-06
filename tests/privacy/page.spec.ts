@@ -34,13 +34,16 @@ test.describe("/privacy", () => {
     await expect(page.getByTestId("privacy-dnt")).toBeVisible();
   });
 
-  test("shows placeholders for the values this repo does not have yet", async ({
+  test("names the business and the effective date, and shows a placeholder for the contact email", async ({
     page,
   }) => {
     await page.goto("/privacy", { waitUntil: "domcontentloaded" });
     const text = await page.locator("article").innerText();
-    expect(text).toContain("[client legal name]");
-    expect(text).toContain("[effective date]");
+    expect(text).toContain(
+      '1836 Digital Investment Group ("we") runs this website',
+    );
+    expect(text).toContain("Effective October 6, 2026");
+    expect(text).not.toContain("[client legal name]");
     expect(text).toContain("[privacy contact email]");
   });
 
