@@ -1,7 +1,7 @@
 # CLAUDE.md
 
 The one-page site for [1836dig.com](https://www.1836dig.com/) — 1836 Digital
-Investment Group — converted off Webflow onto the Reddoor stack: SvelteKit 2 /
+Investment Group — converted off Webflow onto the Reddoor stack: SvelteKit 3 /
 Svelte 5 / Tailwind 4 on adapter-netlify, with **no CMS**. There is exactly one
 page and its content is hardcoded in `src/routes/+page.svelte`; the contact form
 posts to that route's action, which wraps the central dashboard ingest

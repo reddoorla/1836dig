@@ -9,7 +9,10 @@ import {
 import { tmpdir } from "node:os";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { collectBuildServices } from "../../scripts/privacy-services";
+import {
+  collectBuildServices,
+  KIT_CONFIG_FILE,
+} from "../../scripts/privacy-services";
 
 let root: string;
 const put = (rel: string, text: string) => {
@@ -18,14 +21,14 @@ const put = (rel: string, text: string) => {
 };
 
 const config = (directives: Record<string, string[]> | null) =>
-  `export default { kit: { adapter: { name: "@sveltejs/adapter-netlify" }${
+  `export default { adapter: { name: "@sveltejs/adapter-netlify" }${
     directives ? `, csp: { directives: ${JSON.stringify(directives)} }` : ""
-  } } };`;
+  } };`;
 
 test.beforeEach(() => {
   root = mkdtempSync(join(tmpdir(), "privacy-"));
   put("package.json", `{ "type": "module" }`);
-  put("svelte.config.js", config({ "frame-src": ["self"] }));
+  put(KIT_CONFIG_FILE, config({ "frame-src": ["self"] }));
 });
 test.afterEach(() => rmSync(root, { recursive: true, force: true }));
 
@@ -55,9 +58,9 @@ test.describe("collectBuildServices", () => {
 
   test("reads the CSP the config resolves to, not the text it is written in", async () => {
     put(
-      "svelte.config.js",
+      KIT_CONFIG_FILE,
       `const base = { "frame-src": ["https://*.vimeo.com"] };
-export default { kit: { csp: { directives: { ...base } } } };`,
+export default { csp: { directives: { ...base } } };`,
     );
     expect((await collectBuildServices(root)).vimeo).toBe(true);
   });
@@ -71,10 +74,7 @@ export default { kit: { csp: { directives: { ...base } } } };`,
   });
 
   test("keeps a CSP with no directives from counting as a CSP", async () => {
-    put(
-      "svelte.config.js",
-      `export default { kit: { csp: { directives: {} } } };`,
-    );
+    put(KIT_CONFIG_FILE, `export default { csp: { directives: {} } };`);
     put(
       "src/lib/V.svelte",
       `<iframe src="https://player.vimeo.com/video/1"></iframe>`,
@@ -83,7 +83,7 @@ export default { kit: { csp: { directives: { ...base } } } };`,
   });
 
   test("falls back to the source when the config sets no CSP", async () => {
-    put("svelte.config.js", config(null));
+    put(KIT_CONFIG_FILE, config(null));
     put(
       "src/lib/V.svelte",
       `<iframe src="https://player.vimeo.com/video/1"></iframe>`,

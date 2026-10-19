@@ -58,12 +58,18 @@ function walk(
   }
 }
 
+// SvelteKit 3's options are top-level (the `sveltekit(...)` plugin argument),
+// with no `kit` namespace, and the file is sveltekit.config.js because kit 3
+// refuses to start beside a svelte.config.js.
+export const KIT_CONFIG_FILE = "sveltekit.config.js";
+
 type KitConfig = {
-  kit?: { csp?: { directives?: CspDirectives }; adapter?: { name?: string } };
+  csp?: { directives?: CspDirectives };
+  adapter?: { name?: string };
 };
 
-async function readSvelteConfig(root: string): Promise<KitConfig> {
-  const path = join(root, "svelte.config.js");
+async function readKitConfig(root: string): Promise<KitConfig> {
+  const path = join(root, KIT_CONFIG_FILE);
   if (!existsSync(path)) return {};
   const href = pathToFileURL(path).href;
   const fresh = process.env.VITEST
@@ -78,13 +84,13 @@ async function readSvelteConfig(root: string): Promise<KitConfig> {
 export async function collectBuildServices(
   root: string,
 ): Promise<BuildServices> {
-  const config = await readSvelteConfig(root);
+  const config = await readKitConfig(root);
   const sources: SourceFile[] = [];
   if (existsSync(join(root, "src"))) walk(root, join(root, "src"), sources);
-  const directives = config.kit?.csp?.directives;
+  const directives = config.csp?.directives;
   return deriveBuildServices({
     csp: directives && Object.keys(directives).length > 0 ? directives : null,
-    adapterName: config.kit?.adapter?.name,
+    adapterName: config.adapter?.name,
     sources,
   });
 }
@@ -99,7 +105,7 @@ export function privacyServices(): Plugin {
     configureServer(server) {
       const invalidate = (file: string) => {
         const rel = relative(root, file).split(sep).join("/");
-        if (!rel.startsWith("src/") && rel !== "svelte.config.js") return;
+        if (!rel.startsWith("src/") && rel !== KIT_CONFIG_FILE) return;
         const mod = server.moduleGraph.getModuleById(RESOLVED_ID);
         if (mod) server.moduleGraph.invalidateModule(mod);
       };
