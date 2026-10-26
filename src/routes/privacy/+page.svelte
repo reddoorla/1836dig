@@ -49,7 +49,7 @@
   {/if}
 {/snippet}
 
-<div class="font-body text-cream min-h-svh bg-[#101010] font-light">
+<main class="font-body text-cream min-h-svh bg-[#101010] font-light">
   <article class="max-w-2xl mx-auto px-8 py-16 space-y-8">
     {#if p.draft}
       <p
@@ -243,4 +243,4 @@
       </p>
     </section>
   </article>
-</div>
+</main>
