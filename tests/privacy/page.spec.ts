@@ -50,6 +50,19 @@ test.describe("/privacy", () => {
     ).toBeVisible();
   });
 
+  // The fleet browser audit (reddoor-maintenance src/audits/browser.ts) scores
+  // a route as rendering only when `main, [role=main]` is visible, on every
+  // engine and device. Without it /privacy stored crossbrowser_ok = 0 and
+  // mobile_ok = 0 every night from 2026-10-06.
+  test("has exactly one visible main landmark around the policy", async ({
+    page,
+  }) => {
+    await page.goto("/privacy", { waitUntil: "domcontentloaded" });
+    await expect(page.locator("main, [role=main]")).toHaveCount(1);
+    await expect(page.locator("main, [role=main]").first()).toBeVisible();
+    await expect(page.locator("main article")).toHaveCount(1);
+  });
+
   test("is the only page that asks not to be indexed", async ({ page }) => {
     await page.goto("/", { waitUntil: "domcontentloaded" });
     await expect(page.locator('meta[name="robots"]')).toHaveCount(0);
