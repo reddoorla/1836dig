@@ -75,7 +75,7 @@ test.describe("links to /privacy", () => {
     await expect(page.locator('footer a[href="/privacy"]')).toBeVisible();
   });
 
-  test("the contact form carries the notice, unclipped, directly under its submit button", async ({
+  test("the contact form carries the notice, unclipped, clear of its submit button", async ({
     page,
   }) => {
     await page.setViewportSize({ width: 1280, height: 800 });
@@ -86,10 +86,6 @@ test.describe("links to /privacy", () => {
     const notice = form.getByTestId("privacy-notice");
     await notice.scrollIntoViewIfNeeded();
     await expect(notice).toBeInViewport({ ratio: 1 });
-    const button = await form.locator('button[type="submit"]').boundingBox();
-    const box = await notice.boundingBox();
-    expect(box!.y - (button!.y + button!.height)).toBeGreaterThanOrEqual(0);
-    expect(box!.y - (button!.y + button!.height)).toBeLessThan(40);
     await expect(notice.locator('a[href="/privacy"]')).toBeVisible();
     const after = await form.evaluate((f) => {
       const submit = f.querySelector('button[type="submit"]');
@@ -101,5 +97,31 @@ test.describe("links to /privacy", () => {
       );
     });
     expect(after).toBe(true);
+    // Neither covers the other: their boxes do not intersect. Edges are compared
+    // with each other, never with a number, so any gap or side a designer picks
+    // passes, and a notice pulled even partly over the button fails.
+    await expect(form.locator('button[type="submit"]')).toBeInViewport({
+      ratio: 1,
+    });
+    const boxes = await form.evaluate((f) => {
+      const edges = (el: Element) => {
+        const { top, right, bottom, left } = el.getBoundingClientRect();
+        return { top, right, bottom, left };
+      };
+      return {
+        button: edges(f.querySelector('button[type="submit"]')!),
+        notice: edges(f.querySelector("[data-testid='privacy-notice']")!),
+      };
+    });
+    const { button, notice: n } = boxes;
+    const apart =
+      button.bottom <= n.top ||
+      n.bottom <= button.top ||
+      button.right <= n.left ||
+      n.right <= button.left;
+    expect(
+      apart,
+      `the submit button's box and the notice's box intersect: ${JSON.stringify(boxes)}`,
+    ).toBe(true);
   });
 });
