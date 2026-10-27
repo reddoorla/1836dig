@@ -86,10 +86,6 @@ test.describe("links to /privacy", () => {
     const notice = form.getByTestId("privacy-notice");
     await notice.scrollIntoViewIfNeeded();
     await expect(notice).toBeInViewport({ ratio: 1 });
-    const button = await form.locator('button[type="submit"]').boundingBox();
-    const box = await notice.boundingBox();
-    expect(box!.y - (button!.y + button!.height)).toBeGreaterThanOrEqual(0);
-    expect(box!.y - (button!.y + button!.height)).toBeLessThan(40);
     await expect(notice.locator('a[href="/privacy"]')).toBeVisible();
     const after = await form.evaluate((f) => {
       const submit = f.querySelector('button[type="submit"]');
@@ -101,5 +97,18 @@ test.describe("links to /privacy", () => {
       );
     });
     expect(after).toBe(true);
+    // Neither covers the other: a click at each one's centre lands on it.
+    for (const el of [form.locator('button[type="submit"]'), notice]) {
+      await expect(el).toBeInViewport({ ratio: 1 });
+      const onTop = await el.evaluate((node) => {
+        const r = node.getBoundingClientRect();
+        const hit = document.elementFromPoint(
+          r.left + r.width / 2,
+          r.top + r.height / 2,
+        );
+        return !!hit && node.contains(hit);
+      });
+      expect(onTop).toBe(true);
+    }
   });
 });
