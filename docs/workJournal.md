@@ -102,7 +102,7 @@ The wrapper `<div>` is now `<main>`, with the same classes. No CSS targets `main
 
 Tried and dropped: restoring the lost space in "with your messageand is used to confirm…". Svelte trims the newline and indent at the start of the `{#if s.turnstile}` block, before "and is used", but the test build has no `PUBLIC_TURNSTILE_SITE_KEY`, so no CI test can see the clause. It is filed as #48 instead of riding this fix.
 
-## 2026-10-27 — The privacy notice's 0–40 px gap under the submit button becomes "neither covers the other" (#TBD)
+## 2026-10-27 — The privacy notice's 0–40 px gap under the submit button becomes "neither covers the other" (#52)
 
 The fleet test audit (`reddoorla/reddoor-workspace` `audits/2026-10-26-fleet-test-audit/report.md`, batch D) flagged one test here: "the contact form carries the notice, unclipped, directly under its submit button" measured both `boundingBox`es and pinned the gap between the button's bottom and the notice's top to 0–40 px. That is a spacing value, which the template's rule keeps out of the gate, so the four lines went.
 
