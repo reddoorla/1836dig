@@ -75,7 +75,7 @@ test.describe("links to /privacy", () => {
     await expect(page.locator('footer a[href="/privacy"]')).toBeVisible();
   });
 
-  test("the contact form carries the notice, unclipped, under its submit button", async ({
+  test("the contact form carries the notice, unclipped, clear of its submit button", async ({
     page,
   }) => {
     await page.setViewportSize({ width: 1280, height: 800 });
