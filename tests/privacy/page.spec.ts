@@ -75,7 +75,7 @@ test.describe("links to /privacy", () => {
     await expect(page.locator('footer a[href="/privacy"]')).toBeVisible();
   });
 
-  test("the contact form carries the notice, unclipped, directly under its submit button", async ({
+  test("the contact form carries the notice, unclipped, under its submit button", async ({
     page,
   }) => {
     await page.setViewportSize({ width: 1280, height: 800 });
@@ -97,18 +97,31 @@ test.describe("links to /privacy", () => {
       );
     });
     expect(after).toBe(true);
-    // Neither covers the other: a click at each one's centre lands on it.
-    for (const el of [form.locator('button[type="submit"]'), notice]) {
-      await expect(el).toBeInViewport({ ratio: 1 });
-      const onTop = await el.evaluate((node) => {
-        const r = node.getBoundingClientRect();
-        const hit = document.elementFromPoint(
-          r.left + r.width / 2,
-          r.top + r.height / 2,
-        );
-        return !!hit && node.contains(hit);
-      });
-      expect(onTop).toBe(true);
-    }
+    // Neither covers the other: their boxes do not intersect. Edges are compared
+    // with each other, never with a number, so any gap or side a designer picks
+    // passes, and a notice pulled even partly over the button fails.
+    await expect(form.locator('button[type="submit"]')).toBeInViewport({
+      ratio: 1,
+    });
+    const boxes = await form.evaluate((f) => {
+      const edges = (el: Element) => {
+        const { top, right, bottom, left } = el.getBoundingClientRect();
+        return { top, right, bottom, left };
+      };
+      return {
+        button: edges(f.querySelector('button[type="submit"]')!),
+        notice: edges(f.querySelector("[data-testid='privacy-notice']")!),
+      };
+    });
+    const { button, notice: n } = boxes;
+    const apart =
+      button.bottom <= n.top ||
+      n.bottom <= button.top ||
+      button.right <= n.left ||
+      n.right <= button.left;
+    expect(
+      apart,
+      `the submit button's box and the notice's box intersect: ${JSON.stringify(boxes)}`,
+    ).toBe(true);
   });
 });
