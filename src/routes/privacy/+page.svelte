@@ -36,6 +36,10 @@
 
 <svelte:head>
   <title>Privacy Policy | 1836 Digital Investment Group</title>
+  <meta
+    name="description"
+    content="How 1836 Digital Investment Group collects, uses and protects the information you share through 1836dig.com."
+  />
   {#if p.draft}
     <meta name="robots" content="noindex" />
   {/if}
