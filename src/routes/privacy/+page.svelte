@@ -175,8 +175,10 @@
             with Google's
             <a
               href="https://tools.google.com/dlpage/gaoptout"
-              class="hover:text-white underline">browser add-on</a
-            >.
+              class="hover:text-white underline"
+            >
+              browser add-on
+            </a>.
           </li>
         {/if}
         {#if s.googleFonts}
