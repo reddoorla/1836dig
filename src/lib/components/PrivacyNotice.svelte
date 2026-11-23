@@ -8,6 +8,8 @@
 >
   We use what you send to reply to you and to filter spam. See our <a
     href={PRIVACY_PATH}
-    class="hover:text-cream underline">Privacy Policy</a
-  >.
+    class="hover:text-cream underline"
+  >
+    Privacy Policy
+  </a>.
 </p>
