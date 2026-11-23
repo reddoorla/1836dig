@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "counts": {
+    "src/lib/components/PrivacyNotice.svelte": {
+      "copy\tPrivacy Policy": 1,
+      "copy\tWe use what you send to reply to you and to filter spam. See our": 1
+    },
+    "src/routes/+page.svelte": {
+      "button\tCONTACT US": 1,
+      "button\tPLEASE WAIT...": 1,
+      "copy\t1836 Digital Investment Group ·": 1,
+      "copy\tEmail": 1,
+      "copy\tPrivacy Policy": 1,
+      "copy\tThank you! Your submission has been received!": 1,
+      "heading\t1836 DIGITAL INVESTMENT GROUP": 1,
+      "image\t/images/star-1000.png": 1,
+      "seo\t1836 Digital Investment Group": 2
+    }
+  }
+}
